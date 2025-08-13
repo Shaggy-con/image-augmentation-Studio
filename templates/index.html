@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Augmentation App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#3B82F6',
+                        'secondary': '#1E40AF',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                Image Augmentation Studio
+            </h1>
+            <p class="text-gray-600 text-lg">
+                Transform your images with powerful augmentation tools
+            </p>
+        </div>
+
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Controls Panel -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 h-fit">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
+                    </svg>
+                    Augmentation Controls
+                </h2>
+
+                <form id="augmentForm" enctype="multipart/form-data" method="post" class="space-y-6">
+                    <!-- File Input -->
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700">
+                            Select Image
+                        </label>
+                        <div class="relative">
+                            <input type="file" name="image" accept="image/*" required 
+                                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary file:text-white hover:file:bg-secondary file:cursor-pointer border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <!-- Transformation Controls -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Rotation -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                Rotation (degrees)
+                            </label>
+                            <input type="number" name="rotation" value="0" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+
+                        <!-- Scale -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                Scale (1.0 = normal)
+                            </label>
+                            <input type="number" step="0.1" name="scale" value="1.0" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+
+                        <!-- Brightness -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                Brightness
+                            </label>
+                            <input type="number" step="0.1" name="brightness" value="1.0" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+
+                        <!-- Contrast -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                Contrast
+                            </label>
+                            <input type="number" step="0.1" name="contrast" value="1.0" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+
+                        <!-- Saturation -->
+                        <div class="space-y-2 md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                Saturation
+                            </label>
+                            <input type="number" step="0.1" name="saturation" value="1.0" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <!-- Checkbox Options -->
+                    <div class="space-y-3">
+                        <h3 class="text-lg font-medium text-gray-800">Quick Options</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" name="flip_horizontal" 
+                                       class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                                <span class="text-sm font-medium text-gray-700">Flip Horizontal</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" name="flip_vertical" 
+                                       class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                                <span class="text-sm font-medium text-gray-700">Flip Vertical</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" name="grayscale" 
+                                       class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                                <span class="text-sm font-medium text-gray-700">Convert to Grayscale</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 shadow-lg">
+                        <span class="flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            Augment Image
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Result Panel -->
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Result Preview
+                </h2>
+
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center min-h-96 flex items-center justify-center" id="imageContainer">
+                    <div id="placeholderContent" class="text-gray-500">
+                        <svg class="w-20 h-20 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <p class="text-lg font-medium">Your augmented image will appear here</p>
+                        <p class="text-sm mt-2">Upload an image and apply transformations to see the result</p>
+                    </div>
+                    <img id="resultImage" class="max-w-full max-h-96 rounded-lg shadow-md hidden" alt="Augmented result"/>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="hidden text-center py-8">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                    <p class="text-gray-600">Processing your image...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('augmentForm').onsubmit = async function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('placeholderContent').classList.add('hidden');
+            document.getElementById('resultImage').classList.add('hidden');
+            
+            let form = e.target;
+            let data = new FormData(form);
+            
+            try {
+                let res = await fetch('/augment', { method: 'POST', body: data });
+                
+                // Hide loading state
+                document.getElementById('loadingState').classList.add('hidden');
+                
+                if(res.ok) {
+                    let blob = await res.blob();
+                    let resultImage = document.getElementById('resultImage');
+                    resultImage.src = URL.createObjectURL(blob);
+                    resultImage.classList.remove('hidden');
+                } else {
+                    document.getElementById('placeholderContent').classList.remove('hidden');
+                    alert('Failed to augment image! Please try again.');
+                }
+            } catch (error) {
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('placeholderContent').classList.remove('hidden');
+                alert('Network error! Please check your connection and try again.');
+            }
+        };
+    </script>
+</body>
+</html>
