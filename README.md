@@ -50,9 +50,6 @@ A web application for interactive image augmentation, built with Flask, Python, 
 
 5. **Upload an image, select augmentation options, and preview/download the result.**
 
-## Example
-
-![Demo Screenshot](demo/demo.png)
 
 ## License
 
@@ -63,8 +60,9 @@ This project is licensed under the MIT License.
 *Generate diverse images for AI model training with ease!*
 
 <img width="1297" height="769" alt="Screenshot 2025-08-13 at 9 41 08 PM" src="https://github.com/user-attachments/assets/680a38c8-03e0-443b-9703-8eebae5725ec" />
+Landing webpage
 
-
+<br>
 
 <img width="1301" height="767" alt="Screenshot 2025-08-13 at 9 42 04 PM" src="https://github.com/user-attachments/assets/9a1e9ac9-d1d3-429f-aa9d-b97bc2f1fcf0" />
 
